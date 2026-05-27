@@ -6,6 +6,9 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+// Get API URL from environment variable or use localhost as fallback
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -20,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         username,
         password
       });
@@ -41,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         username,
         email,
         password
