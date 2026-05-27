@@ -3,6 +3,9 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 
+// Get API URL from environment variable or use localhost as fallback
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const History = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +17,7 @@ const History = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/history');
+      const response = await axios.get(`${API_URL}/api/history`);
       setHistory(response.data.history);
     } catch (error) {
       toast.error('Failed to fetch history');
@@ -26,7 +29,7 @@ const History = () => {
   const deleteEntry = async (id) => {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/history/${id}`);
+        await axios.delete(`${API_URL}/api/history/${id}`);
         toast.success('Entry deleted');
         fetchHistory();
       } catch (error) {
@@ -38,7 +41,7 @@ const History = () => {
   const clearAllHistory = async () => {
     if (window.confirm('Are you sure you want to clear all history? This cannot be undone.')) {
       try {
-        await axios.delete('http://localhost:5000/api/history');
+        await axios.delete(`${API_URL}/api/history`);
         toast.success('All history cleared');
         fetchHistory();
       } catch (error) {
