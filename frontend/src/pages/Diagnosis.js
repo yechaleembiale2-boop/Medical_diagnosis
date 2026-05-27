@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+// Get API URL from environment variable or use localhost as fallback
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Diagnosis = () => {
   const [availableSymptoms, setAvailableSymptoms] = useState([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
@@ -20,7 +23,7 @@ const Diagnosis = () => {
       const token = localStorage.getItem('token');
       console.log('Token exists:', !!token);
       
-      const response = await axios.get('http://localhost:5000/api/diagnosis/symptoms', {
+      const response = await axios.get(`${API_URL}/api/diagnosis/symptoms`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -76,7 +79,7 @@ const Diagnosis = () => {
       const token = localStorage.getItem('token');
       console.log('Sending diagnosis request with symptoms:', selectedSymptoms);
       
-      const response = await axios.post('http://localhost:5000/api/diagnosis/diagnose', {
+      const response = await axios.post(`${API_URL}/api/diagnosis/diagnose`, {
         symptoms: selectedSymptoms
       }, {
         headers: {
